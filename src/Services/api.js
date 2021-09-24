@@ -31,5 +31,6 @@ export const fetchPictures = async (name, page) => {
       page,
     },
   });
+
   return response.data.hits;
 };

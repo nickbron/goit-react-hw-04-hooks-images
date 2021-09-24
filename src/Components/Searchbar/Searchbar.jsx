@@ -13,10 +13,8 @@ export const Searchbar = ({ onSearch }) => {
     e.preventDefault();
     if (e.target.elements.pictureName.value.trim() === '') {
       toast.error('Для поиска введите значение');
-
       return;
     }
-
     onSearch(e.target.elements.pictureName.value);
   };
 
