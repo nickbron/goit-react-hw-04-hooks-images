@@ -9,22 +9,13 @@ import Modal from './Modal/Modal';
 import Spinner from './Spinner/Spinner';
 
 export default function App() {
-  const [pictureName, setPictureName] = useState(null);
+  const [pictureName, setPictureName] = useState(() => {
+    return '';
+  });
   const [pictures, setPictures] = useState([]);
   const [page, setPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const fetchData = async () => {
-    const data = await fetchPictures(pictureName, page);
-    const imageInfo = data.map(({ id, largeImageURL, webformatURL }) => ({
-      id,
-      largeImageURL,
-      webformatURL,
-    }));
-
-    return imageInfo;
-  };
 
   const scroll = () => {
     window.scrollTo({
@@ -51,22 +42,33 @@ export default function App() {
   };
 
   useEffect(() => {
+    console.log('1');
+    const fetchData = async () => {
+      const data = await fetchPictures(pictureName, page);
+      const imageInfo = data.map(({ id, largeImageURL, webformatURL }) => ({
+        id,
+        largeImageURL,
+        webformatURL,
+      }));
+
+      return imageInfo;
+    };
     const imageInfo = fetchData();
     scroll();
 
     imageInfo.then(res => {
       setPictures(res);
     });
-  }, [pictureName]);
+  }, [page, pictureName]);
 
-  useEffect(() => {
-    const imageInfo = fetchData();
-    scroll();
+  // useEffect(() => {
+  //   const imageInfo = fetchData();
+  //   scroll();
 
-    imageInfo.then(res => {
-      setPictures(prevPictures => [...prevPictures, ...res]);
-    });
-  }, [page]);
+  //   imageInfo.then(res => {
+  //     setPictures(prevPictures => [...prevPictures, ...res]);
+  //   });
+  // }, [page]);
 
   return (
     <div className="App">
